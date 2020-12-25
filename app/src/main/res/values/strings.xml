@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">GoogleLocationPlaces</string>
+
+    <!-- String value for Google maps API Key [CHAR LIMIT = 100] -->
+    <string name="maps_APIKey">AIzaSyBdj90xCPAl9mrRd1KreVOxDS6CCMEvthY</string>
+
+    <!-- String value for open Map Activity -->
+    <string name="open_mapActivity">Open Google Map</string>
+
 </resources>

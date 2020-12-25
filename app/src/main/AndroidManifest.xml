@@ -2,6 +2,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.iamspd.googlelocationplaces">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- allows the API to use WiFi or mobile cell data (or both)
+            to determine device's location -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- allows the API to determine as precise a location as
+            possible from location providers, including the GPS
+            as well as the WiFi and mobile cell data -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <!-- allows the API check the connection status in order
+            to determine whether the data can be downloaded -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,6 +24,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!-- Google Maps API key specified -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/maps_APIKey" />
+
+        <!-- this meta tag embeds the Google Play Services
+                version to which it is compiled with -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity android:name=".MapActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
