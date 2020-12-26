@@ -15,8 +15,11 @@ import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,9 +30,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +54,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     // widgets
     private EditText mMapSearch;
+    private ImageView mGps;
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -75,6 +81,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
         }
+
+        init();
     }
 
     @Override
@@ -83,6 +91,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_map);
 
         mMapSearch = findViewById(R.id.etSearch);
+        mGps = findViewById(R.id.ivGps);
         getLocationPermission();
     }
 
@@ -104,6 +113,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 return false;
             }
         });
+
+        mGps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: clicked gps icon");
+                getDeviceLocation();
+            }
+        });
+        hideSoftKeyboard();
     }
 
     private void geoLocate(){
@@ -112,6 +130,21 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         Geocoder geocoder = new Geocoder(MapActivity.this);
         List<Address> list = new ArrayList<>();
+
+        try {
+            list = geocoder.getFromLocationName(searchString, 1);
+        }catch (IOException e){
+            Log.e(TAG, "geoLocate: IOException: " + e.getMessage());
+        }
+        if (list.size() > 0){
+            Address address = list.get(0);
+            Log.d(TAG, "geoLocate: location found: " + address.toString());
+            // Toast.makeText(this, address.toString(), Toast.LENGTH_SHORT).show();
+
+            moveCamera(new LatLng(address.getLatitude(), address.getLongitude()), DEFAULT_ZOOM,
+                    address.getAddressLine(0));
+        }
+
     }
 
     private void getDeviceLocation(){
@@ -130,7 +163,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                             Location currentLocation = (Location) task.getResult();
 
                             moveCamera(new LatLng(currentLocation.getLatitude(),
-                                    currentLocation.getLongitude()), DEFAULT_ZOOM);
+                                    currentLocation.getLongitude()), DEFAULT_ZOOM,
+                                    "My Location");
                         }else{
                             Log.d(TAG, "onComplete: current location is null.");
                             Toast.makeText(MapActivity.this, "Unable to get " +
@@ -144,10 +178,19 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
-    private void moveCamera(LatLng latLng, float zoom){
+    private void moveCamera(LatLng latLng, float zoom, String title){
         Log.d(TAG, "moveCamera: moving the camera to: Lat: " + latLng.latitude +
                 " Lng: " + latLng.longitude );
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+
+        if (!title.equals("My Location")){
+            MarkerOptions markerOptions = new MarkerOptions()
+                    .position(latLng)
+                    .title(title);
+            mMap.addMarker(markerOptions);
+        }
+
+        hideSoftKeyboard();
     }
 
     private void initMap(){
@@ -200,5 +243,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 }
             }
         }
+    }
+
+    private void hideSoftKeyboard(){
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 }
