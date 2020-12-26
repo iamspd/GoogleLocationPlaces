@@ -11,5 +11,42 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="12dp"
+        android:elevation="12dp"
+        android:background="@drawable/white_border">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:id="@+id/ivSearch"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="12dp"
+            android:src="@drawable/ic_search"
+            android:contentDescription="@string/map_search" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/etSearch"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@id/ivSearch"
+            android:layout_centerVertical="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@android:color/black"
+            android:background="@null"
+            android:inputType="text"
+            android:hint="@string/map_search"
+            android:imeOptions="actionSearch" />
+
+    </RelativeLayout>
+
+
 
 </RelativeLayout>

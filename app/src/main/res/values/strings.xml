@@ -7,4 +7,13 @@
     <!-- String value for open Map Activity -->
     <string name="open_mapActivity">Open Google Map</string>
 
+    <!-- String value for search -->
+    <string name="map_search">Enter city, address, or ZIP code</string>
+
+    <!-- String value for my location -->
+    <string name="map_myLocation">My Location</string>
+
+    <!-- String value for satellite view  -->
+    <string name="map_satellite">Satellite View</string>
+
 </resources>

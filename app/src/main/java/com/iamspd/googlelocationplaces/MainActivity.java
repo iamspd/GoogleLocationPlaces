@@ -33,7 +33,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onOpenMapClick(){
-        startActivity(new Intent(MainActivity.this, MapActivity.class));
+        mOpenMap = findViewById(R.id.btnOpenMap);
+        mOpenMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, MapActivity.class));
+            }
+        });
     }
 
     public boolean isServiceOK(){
