@@ -212,7 +212,7 @@ public class PlaceAutoCompleteAdapter
             PendingResult<AutocompletePredictionBuffer> results =
                     Places.GeoDataApi
                             .getAutocompletePredictions(mGoogleApiClient, constraint.toString(),
-                                    mBounds, mPlaceFilter);
+                                    mBounds, null);
 
             // This method should have been called off the main UI thread. Block and wait for at most 60s
             // for a result from the API.
